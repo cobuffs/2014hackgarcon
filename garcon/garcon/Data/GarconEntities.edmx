@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="garconModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="billitems">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="billid" Type="int" Nullable="false" />
+          <Property Name="itemid" Type="int" Nullable="false" />
+          <Property Name="seatnum" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bills">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tableid" Type="int" Nullable="false" />
+          <Property Name="paid" Type="bit" Nullable="false" />
+          <Property Name="checkedin" Type="datetime" Nullable="false" />
+          <Property Name="checkedout" Type="datetime" />
+        </EntityType>
+        <EntityType Name="items">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="restaurantid" Type="int" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="price" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="restaurants">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="loc" Type="geography" Nullable="false" />
+          <Property Name="img" Type="nvarchar" MaxLength="250" />
+        </EntityType>
+        <EntityType Name="tables">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="restaurantid" Type="int" Nullable="false" />
+          <Property Name="beaconid" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_billitems_bills">
+          <End Role="bills" Type="Self.bills" Multiplicity="1" />
+          <End Role="billitems" Type="Self.billitems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bills">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="billitems">
+              <PropertyRef Name="billid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_billitems_items">
+          <End Role="items" Type="Self.items" Multiplicity="1" />
+          <End Role="billitems" Type="Self.billitems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="items">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="billitems">
+              <PropertyRef Name="itemid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bills_tables">
+          <End Role="tables" Type="Self.tables" Multiplicity="1" />
+          <End Role="bills" Type="Self.bills" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tables">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bills">
+              <PropertyRef Name="tableid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_items_restaurants">
+          <End Role="restaurants" Type="Self.restaurants" Multiplicity="1" />
+          <End Role="items" Type="Self.items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="items">
+              <PropertyRef Name="restaurantid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tables_restaurants">
+          <End Role="restaurants" Type="Self.restaurants" Multiplicity="1" />
+          <End Role="tables" Type="Self.tables" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="restaurants">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="tables">
+              <PropertyRef Name="restaurantid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="garconModelStoreContainer">
+          <EntitySet Name="billitems" EntityType="Self.billitems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="bills" EntityType="Self.bills" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="items" EntityType="Self.items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="restaurants" EntityType="Self.restaurants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tables" EntityType="Self.tables" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_billitems_bills" Association="Self.FK_billitems_bills">
+            <End Role="bills" EntitySet="bills" />
+            <End Role="billitems" EntitySet="billitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_billitems_items" Association="Self.FK_billitems_items">
+            <End Role="items" EntitySet="items" />
+            <End Role="billitems" EntitySet="billitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bills_tables" Association="Self.FK_bills_tables">
+            <End Role="tables" EntitySet="tables" />
+            <End Role="bills" EntitySet="bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_items_restaurants" Association="Self.FK_items_restaurants">
+            <End Role="restaurants" EntitySet="restaurants" />
+            <End Role="items" EntitySet="items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tables_restaurants" Association="Self.FK_tables_restaurants">
+            <End Role="restaurants" EntitySet="restaurants" />
+            <End Role="tables" EntitySet="tables" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="garconModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="billitem">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="billid" Type="Int32" Nullable="false" />
+          <Property Name="itemid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="bill" Relationship="Self.FK_billitems_bills" FromRole="billitems" ToRole="bills" />
+          <NavigationProperty Name="item" Relationship="Self.FK_billitems_items" FromRole="billitems" ToRole="items" />
+          <Property Name="seatnum" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="bill">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tableid" Type="Int32" Nullable="false" />
+          <Property Name="paid" Type="Boolean" Nullable="false" />
+          <Property Name="checkedin" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="checkedout" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="billitems" Relationship="Self.FK_billitems_bills" FromRole="bills" ToRole="billitems" />
+          <NavigationProperty Name="table" Relationship="Self.FK_bills_tables" FromRole="bills" ToRole="tables" />
+        </EntityType>
+        <EntityType Name="item">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="restaurantid" Type="Int32" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="price" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <NavigationProperty Name="billitems" Relationship="Self.FK_billitems_items" FromRole="items" ToRole="billitems" />
+          <NavigationProperty Name="restaurant" Relationship="garconModel.FK_items_restaurants1" FromRole="item" ToRole="restaurant" />
+        </EntityType>
+        <EntityType Name="table">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="restaurantid" Type="Int32" Nullable="false" />
+          <Property Name="beaconid" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="bills" Relationship="Self.FK_bills_tables" FromRole="tables" ToRole="bills" />
+          <NavigationProperty Name="restaurant" Relationship="garconModel.FK_tables_restaurants1" FromRole="table" ToRole="restaurant" />
+        </EntityType>
+        <Association Name="FK_billitems_bills">
+          <End Role="bills" Type="Self.bill" Multiplicity="1" />
+          <End Role="billitems" Type="Self.billitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="bills">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="billitems">
+              <PropertyRef Name="billid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_billitems_items">
+          <End Role="items" Type="Self.item" Multiplicity="1" />
+          <End Role="billitems" Type="Self.billitem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="items">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="billitems">
+              <PropertyRef Name="itemid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_bills_tables">
+          <End Role="tables" Type="Self.table" Multiplicity="1" />
+          <End Role="bills" Type="Self.bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tables">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="bills">
+              <PropertyRef Name="tableid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="garconEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="billitems" EntityType="Self.billitem" />
+          <EntitySet Name="bills" EntityType="Self.bill" />
+          <EntitySet Name="items" EntityType="Self.item" />
+          <EntitySet Name="tables" EntityType="Self.table" />
+          <AssociationSet Name="FK_billitems_bills" Association="Self.FK_billitems_bills">
+            <End Role="bills" EntitySet="bills" />
+            <End Role="billitems" EntitySet="billitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_billitems_items" Association="Self.FK_billitems_items">
+            <End Role="items" EntitySet="items" />
+            <End Role="billitems" EntitySet="billitems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_bills_tables" Association="Self.FK_bills_tables">
+            <End Role="tables" EntitySet="tables" />
+            <End Role="bills" EntitySet="bills" />
+          </AssociationSet>
+          <EntitySet Name="restaurants" EntityType="garconModel.restaurant" />
+          <AssociationSet Name="FK_items_restaurants1" Association="garconModel.FK_items_restaurants1">
+            <End Role="restaurant" EntitySet="restaurants" />
+            <End Role="item" EntitySet="items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tables_restaurants1" Association="garconModel.FK_tables_restaurants1">
+            <End Role="restaurant" EntitySet="restaurants" />
+            <End Role="table" EntitySet="tables" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="restaurant">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="loc" Type="Geography" Nullable="false" />
+          <Property Name="img" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="items" Relationship="garconModel.FK_items_restaurants1" FromRole="restaurant" ToRole="item" />
+          <NavigationProperty Name="tables" Relationship="garconModel.FK_tables_restaurants1" FromRole="restaurant" ToRole="table" />
+        </EntityType>
+        <Association Name="FK_items_restaurants1">
+          <End Type="garconModel.restaurant" Role="restaurant" Multiplicity="1" />
+          <End Type="garconModel.item" Role="item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="restaurant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="item">
+              <PropertyRef Name="restaurantid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tables_restaurants1">
+          <End Type="garconModel.restaurant" Role="restaurant" Multiplicity="1" />
+          <End Type="garconModel.table" Role="table" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="restaurant">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="table">
+              <PropertyRef Name="restaurantid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="garconModelStoreContainer" CdmEntityContainer="garconEntities">
+          <EntitySetMapping Name="billitems">
+            <EntityTypeMapping TypeName="garconModel.billitem">
+              <MappingFragment StoreEntitySet="billitems">
+                <ScalarProperty Name="seatnum" ColumnName="seatnum" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="billid" ColumnName="billid" />
+                <ScalarProperty Name="itemid" ColumnName="itemid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="bills">
+            <EntityTypeMapping TypeName="garconModel.bill">
+              <MappingFragment StoreEntitySet="bills">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="tableid" ColumnName="tableid" />
+                <ScalarProperty Name="paid" ColumnName="paid" />
+                <ScalarProperty Name="checkedin" ColumnName="checkedin" />
+                <ScalarProperty Name="checkedout" ColumnName="checkedout" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="items">
+            <EntityTypeMapping TypeName="garconModel.item">
+              <MappingFragment StoreEntitySet="items">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="restaurantid" ColumnName="restaurantid" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="price" ColumnName="price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tables">
+            <EntityTypeMapping TypeName="garconModel.table">
+              <MappingFragment StoreEntitySet="tables">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="restaurantid" ColumnName="restaurantid" />
+                <ScalarProperty Name="beaconid" ColumnName="beaconid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="restaurants">
+            <EntityTypeMapping TypeName="garconModel.restaurant">
+              <MappingFragment StoreEntitySet="restaurants">
+                <ScalarProperty Name="img" ColumnName="img" />
+                <ScalarProperty Name="loc" ColumnName="loc" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

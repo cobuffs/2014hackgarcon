@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" ng-app>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container" ng-controller="AdminCtrl">
+        <div class="table-chooser">
+            <h1>Choose Table:</h1>
+            <button ng-repeat="table in tables" ng-click="selectTable()" class="btn btn-lg btn-primary col-md-2">Table {{table.id}}</button>
+        </div>
+        <div class="menugrid">
+            <button ng-repeat="menuitem in menuitems" ng-click="addItemToBill(menuitem)" class="btn btn-lg btn-primary col-md-3">{{menuitem.description}}</button>
+            <div class="col-md-12">
+                <h2>Bill Items:</h2>
+                <p class="pull-right col-md-7" ng-repeat="billitem in bill.items track by $index">{{billitem.item.description}} - ${{billitem.item.price}}</p>
+                <h3>Total: ${{bill.total}}</h3>
+                <button class="btn btn-lg" ng-click="goBack()">Done</button>
+            </div>
+        </div>
+
+    </div>
+    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/angular/controllers/main.js"></script>
+</body>
+</html>
